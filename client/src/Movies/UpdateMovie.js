@@ -20,7 +20,9 @@ const UpdateMovie = () => {
     axios
       .get(`http://localhost:5000/api/movies/${id}`)
       .then((res) => {
+        //convert res.data.starts to a string here
         setMovie(res.data);
+        console.log("incoming object:", res.data);
       })
       .catch((err) => console.log(err));
   }, [id]);
@@ -29,13 +31,15 @@ const UpdateMovie = () => {
     e.persist();
     setMovie({ ...movie, [e.target.name]: e.target.value });
   };
-
+  //call in star array -> parse it into string -> update ->convert back to array via split(,)
   const handleSubmit = (e) => {
     e.preventDefault();
+    //convert res.data.starts to an array here in new object
     axios
       .put(`http://localhost:5000/api/movies/${id}`, movie)
       .then((res) => {
         setMovie(res.data);
+        console.log("outgoing object:", res.data);
         push(`/movies/${id}`);
       })
       .catch((err) => console.log(err.data));
@@ -44,8 +48,7 @@ const UpdateMovie = () => {
   return (
     <div>
       <h2>Update Film</h2>
-      onSubmit={handleSubmit}
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="title"
@@ -75,10 +78,10 @@ const UpdateMovie = () => {
           name="starOne"
           onChange={changeHandler}
           placeholder="Star One"
-          value={movie.stars[0]}
+          value={movie.stars}
         />{" "}
         <br /> <br />
-        <input
+        {/* <input
           type="string"
           name="starTwo"
           onChange={changeHandler}
@@ -92,7 +95,7 @@ const UpdateMovie = () => {
           onChange={changeHandler}
           placeholder="Star Three"
           value={movie.stars[2]}
-        />{" "}
+        />{" "} */}
         <br /> <br />
         <button>Update</button>
       </form>
